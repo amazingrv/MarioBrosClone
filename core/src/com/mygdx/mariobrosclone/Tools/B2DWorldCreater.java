@@ -10,6 +10,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.mariobrosclone.MarioBrosClone;
+import com.mygdx.mariobrosclone.Sprites.Brick;
+import com.mygdx.mariobrosclone.Sprites.Coin;
 
 public class B2DWorldCreater {
 	public B2DWorldCreater(World world, TiledMap map)
@@ -50,26 +52,14 @@ public class B2DWorldCreater {
 		for(MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class))
 		{
 			Rectangle rect = ((RectangleMapObject) object).getRectangle();
-			bdef.type = BodyDef.BodyType.StaticBody;
-			bdef.position.set((rect.getX() + rect.getWidth() / 2) / MarioBrosClone.PPM, (rect.getY() + rect.getHeight() / 2) / MarioBrosClone.PPM);
-			
-			body = world.createBody(bdef);
-			shape.setAsBox((rect.getWidth() / 2) / MarioBrosClone.PPM, (rect.getHeight() / 2) / MarioBrosClone.PPM);
-			fdef.shape = shape;
-			body.createFixture(fdef);
+			new Brick(world, map, rect);
 		}
 
 		//coin bodies/fixtures
 		for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class))
 		{
 			Rectangle rect = ((RectangleMapObject) object).getRectangle();
-			bdef.type = BodyDef.BodyType.StaticBody;
-			bdef.position.set((rect.getX() + rect.getWidth() / 2) / MarioBrosClone.PPM, (rect.getY() + rect.getHeight() / 2) / MarioBrosClone.PPM);
-			
-			body = world.createBody(bdef);
-			shape.setAsBox((rect.getWidth() / 2) / MarioBrosClone.PPM, (rect.getHeight() / 2) / MarioBrosClone.PPM);
-			fdef.shape = shape;
-			body.createFixture(fdef);
+			new Coin(world, map, rect);
 		}
 	}
 }

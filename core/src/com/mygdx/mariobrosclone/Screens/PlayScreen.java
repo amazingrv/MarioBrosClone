@@ -5,8 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-
-
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -27,6 +26,8 @@ import com.mygdx.mariobrosclone.Tools.B2DWorldCreater;
 public class PlayScreen implements Screen{
 
 	MarioBrosClone game;
+	TextureAtlas atlas;
+	
 	OrthographicCamera gamecam;
 	Viewport gamePort;
 	Hud hud;
@@ -52,6 +53,9 @@ public class PlayScreen implements Screen{
 	{
 		this.game = game;
 		
+		atlas = new TextureAtlas("Mario_and_Enemies.pack");
+		
+		
 		gamecam = new OrthographicCamera();
 		gamePort = new FitViewport(MarioBrosClone.V_WIDTH / MarioBrosClone.PPM, MarioBrosClone.V_HEIGHT/ MarioBrosClone.PPM, gamecam);
 		hud = new Hud(game.batch);
@@ -66,7 +70,7 @@ public class PlayScreen implements Screen{
 		box2dr = new Box2DDebugRenderer();
 		box2dr.SHAPE_STATIC.set(1,0,0,1);
 		
-		player = new Mario(world);
+		player = new Mario(world, this);
 		
 		new B2DWorldCreater(world, map);
 		
@@ -80,6 +84,11 @@ public class PlayScreen implements Screen{
 		if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= maxLeftVelocity)
 			player.b2body.applyLinearImpulse(new Vector2(LeftVelocity , 0), player.b2body.getWorldCenter(), true);
 				
+	}
+	
+	public TextureAtlas getAtlas()
+	{
+		return atlas;
 	}
 	public void update(float deltaTime)
 	{
@@ -111,6 +120,11 @@ public class PlayScreen implements Screen{
 		
 		//render Box2d Object lines
 		box2dr.render(world, gamecam.combined);
+		
+		game.batch.setProjectionMatrix(gamecam.combined);
+		game.batch.begin();
+		player.draw(game.batch);
+		game.batch.end();
 		//Set batch to draw hud of game
 		game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
 		hud.stage.draw();
