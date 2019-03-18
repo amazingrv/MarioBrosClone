@@ -63,7 +63,7 @@ public class PlayScreen implements Screen{
 		mapLoader = new TmxMapLoader();
 		map = mapLoader.load("level1.tmx");
 		renderer = new OrthogonalTiledMapRenderer(map, 1 / MarioBrosClone.PPM);
-		//intially set our gamecam to be sentered at the start of the map
+		//intially set our gamecam to be centered at the start of the map
 		gamecam.position.set(gamePort.getWorldWidth()/2, gamePort.getWorldHeight()/2, 0);
 		
 		world = new World(new Vector2(0, -10), true);
@@ -93,7 +93,7 @@ public class PlayScreen implements Screen{
 	public void update(float deltaTime)
 	{
 		handleInput(deltaTime);
-		
+		player.update(deltaTime);
 		//1/60 times to calculate the collisions 
 		world.step(1/60f, 6, 2);		
 		gamecam.position.x = player.b2body.getPosition().x;
