@@ -18,10 +18,10 @@ public class Hud implements Disposable{
 	private OrthographicCamera cam;
 	Integer worldTimer;
 	float timeCount;
-	Integer score;
+	static Integer score;
 	
 	Label countdownLabel;
-	Label scoreLabel;
+	static Label scoreLabel;
 	Label timeLabel;
 	Label levelLabel;
 	Label worldLabel;
@@ -56,6 +56,23 @@ public class Hud implements Disposable{
 		table.add(countdownLabel).expandX();
 		
 		stage.addActor(table);
+	}
+	
+	public void update(float dt)
+	{
+		timeCount += dt;
+		if(timeCount >= 1)
+		{
+			worldTimer--;
+			countdownLabel.setText(String.format("%03d", worldTimer));	
+			timeCount = 0;
+		}
+	}
+	
+	public static void addScore(int val)
+	{
+		score += val;
+		scoreLabel.setText(String.format("%06d", score));
 	}
 
 	@Override
