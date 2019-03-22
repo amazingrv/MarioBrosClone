@@ -32,9 +32,9 @@ public class WorldContactListner implements ContactListener {
 		
 		case  MarioBrosClone.ENEMY_HEAD_BIT | MarioBrosClone.MARIO_BIT:
 			if(fixA.getFilterData().categoryBits == MarioBrosClone.ENEMY_HEAD_BIT)
-				((Enemy)fixA.getUserData()).hitOnHead();
+				((Enemy)fixA.getUserData()).hitOnHead((Mario)fixB.getUserData());
 			else 
-				((Enemy) fixB.getUserData()).hitOnHead();
+				((Enemy) fixB.getUserData()).hitOnHead((Mario)fixA.getUserData());
 			break;
 			
 		case MarioBrosClone.ENEMY_BIT | MarioBrosClone.OBJECT_BIT:
@@ -46,14 +46,14 @@ public class WorldContactListner implements ContactListener {
 		case MarioBrosClone.MARIO_BIT | MarioBrosClone.ENEMY_BIT:
 			System.out.println("Mario Dead");
 			if(fixA.getFilterData().categoryBits == MarioBrosClone.MARIO_BIT)
-				((Mario) fixA.getUserData()).hit();
+				((Mario) fixA.getUserData()).hit((Enemy) fixB.getUserData());
 			else
-				((Mario) fixB.getUserData()).hit();
+				((Mario) fixB.getUserData()).hit((Enemy) fixA.getUserData());
 			break;
 			
 		case MarioBrosClone.ENEMY_BIT | MarioBrosClone.ENEMY_BIT:
-			((Enemy) fixA.getUserData()).reverseVelocity(true,false);
-			((Enemy) fixB.getUserData()).reverseVelocity(true,false);
+			((Enemy) fixA.getUserData()).onEnemyHit((Enemy)fixB.getUserData());
+			((Enemy) fixB.getUserData()).onEnemyHit((Enemy)fixA.getUserData());
 			break;
 			
 		case MarioBrosClone.ITEM_BIT | MarioBrosClone.OBJECT_BIT:

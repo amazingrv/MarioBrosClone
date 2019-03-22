@@ -88,7 +88,7 @@ public class Goomba extends Enemy{
 		b2body.createFixture(fdef).setUserData(this);
 	}
 	@Override
-	public void hitOnHead() {
+	public void hitOnHead(Mario mario) {
 		// TODO Auto-generated method stub
 		setToDestroy = true;
 		//world.destroyBody(b2body);		//doesnt respond
@@ -101,5 +101,12 @@ public class Goomba extends Enemy{
 		if(!destroyed || stateTime < 1)
 			super.draw(batch);
 	}
-
+	public void onEnemyHit(Enemy enemy)
+	{
+		if(enemy instanceof Turtle && ((Turtle)enemy).getCurrentState() == Turtle.State.MOVING_SHELL)
+			setToDestroy = true;
+		else
+			reverseVelocity(true, false);
+			
+	}
 }

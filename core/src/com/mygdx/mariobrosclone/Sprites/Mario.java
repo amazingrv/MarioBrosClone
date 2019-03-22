@@ -19,7 +19,7 @@ import com.mygdx.mariobrosclone.MarioBrosClone;
 import com.mygdx.mariobrosclone.Screens.PlayScreen;
 
 public class Mario extends Sprite{
-	public enum State {FALLING, JUMPING, STANDING, GROWING, RUNNING, SHRINKING, DEAD};
+	public enum State {FALLING, JUMPING, STANDING, GROWING, RUNNING, SHRINKING, DEAD};//shrinking not defined 
 	public State currentState, previousState;
 	public World world;
 	public Body b2body;
@@ -27,7 +27,7 @@ public class Mario extends Sprite{
 	TextureRegion marioDead;
 	
 	boolean runGrowAnimation, runShrinkAnimation; 
-	boolean marioIsBig;
+	public boolean marioIsBig;
 	boolean marioIsDead;
 	
 	Animation marioRun, marioJump;
@@ -147,6 +147,12 @@ public class Mario extends Sprite{
 			createBigMario();
 		if(timeToRedefineMario)
 			recreateMario();
+		if(b2body.getPosition().y < 0 && !isDead())
+		{
+			marioIsDead = true;
+			die();
+		}
+			
 	}
 	
 	private void recreateMario() {
@@ -277,28 +283,28 @@ public class Mario extends Sprite{
 		else 
 			return State.STANDING;
 	}
-	public void hit()
+	public void hit(Enemy enemy)
 	{
-		if(marioIsBig)
+		if(enemy instanceof Turtle && ((Turtle) enemy).getCurrentState() == Turtle.State.STANDING_SHELL)
 		{
-			timeToRedefineMario = true;
-			//runShrinkAnimation = true;
-			marioIsBig = false;
-			setBounds(getX(), getY(), getWidth(), getHeight()/2);
-			MarioBrosClone.manager.get("audio/sounds/powerdown.wav", Sound.class).play();
+			((Turtle)enemy).kick(this.getX() <= enemy.getX() ? Turtle.KICK_RIGHT : Turtle.KICK_LEFT);
 		}
 		else
 		{
-			MarioBrosClone.manager.get("audio/music/mario_music.ogg", Music.class).stop();
-			MarioBrosClone.manager.get("audio/sounds/mariodie.wav", Sound.class).play();
-			marioIsDead = true;
-			Filter filter = new Filter();
-			filter.maskBits = MarioBrosClone.NOTHING_BIT;
-			for(Fixture fixture: b2body.getFixtureList())
-				fixture.setFilterData(filter);
-			b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
-		}
-			
+			if(marioIsBig)
+			{
+				timeToRedefineMario = true;
+				//runShrinkAnimation = true;
+				marioIsBig = false;
+				setBounds(getX(), getY(), getWidth(), getHeight()/2);
+				MarioBrosClone.manager.get("audio/sounds/powerdown.wav", Sound.class).play();
+			}
+			else
+			{
+				marioIsDead = true;
+				die();
+			}	
+		}	
 	}
 	
 	public boolean isDead()
@@ -308,5 +314,23 @@ public class Mario extends Sprite{
 	public float getStateTimer()
 	{
 		return stateTimer;
+	}
+	public float getPosition()
+	{
+		return b2body.getPosition().x;
+	}
+	
+	void die()
+	{
+		if(marioIsDead)
+		{
+			MarioBrosClone.manager.get("audio/music/mario_music.ogg", Music.class).stop();
+			MarioBrosClone.manager.get("audio/sounds/mariodie.wav", Sound.class).play();
+			Filter filter = new Filter();
+			filter.maskBits = MarioBrosClone.NOTHING_BIT;
+			for(Fixture fixture: b2body.getFixtureList())
+				fixture.setFilterData(filter);
+			b2body.applyLinearImpulse(new Vector2(0, 6f), b2body.getWorldCenter(), true);
+		}
 	}
 }

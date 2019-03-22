@@ -14,11 +14,15 @@ import com.mygdx.mariobrosclone.MarioBrosClone;
 import com.mygdx.mariobrosclone.Screens.PlayScreen;
 import com.mygdx.mariobrosclone.Sprites.Brick;
 import com.mygdx.mariobrosclone.Sprites.Coin;
+import com.mygdx.mariobrosclone.Sprites.Enemy;
 import com.mygdx.mariobrosclone.Sprites.Goomba;
+import com.mygdx.mariobrosclone.Sprites.Turtle;
 
 public class B2DWorldCreater {
 	
 	Array<Goomba> goombas;
+	Array<Turtle> turtles;
+	
 	public B2DWorldCreater(PlayScreen  screen)
 	{
 		World world = screen.getWorld();
@@ -77,9 +81,28 @@ public class B2DWorldCreater {
 			Rectangle rect = ((RectangleMapObject) object).getRectangle();
 			goombas.add(new Goomba(screen, rect.getX()/MarioBrosClone.PPM, rect.getY()/MarioBrosClone.PPM));
 		}
+		
+		//turtles
+		turtles = new Array<Turtle>();
+		for(MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class))
+		{
+			Rectangle rect = ((RectangleMapObject) object).getRectangle();
+			turtles.add(new Turtle(screen, rect.getX()/MarioBrosClone.PPM, rect.getY()/MarioBrosClone.PPM));
+		}
 	}
 	
 	public Array<Goomba> getGoombas(){
 		return goombas;
 	}
+	public Array<Enemy> getEnemies(){
+		Array<Enemy>  enemy = new Array<Enemy>();
+		enemy.addAll(goombas);
+		enemy.addAll(turtles);
+		return enemy;
+	}
+	
+	/*public void clearTurtle(Turtle turtle)
+	{
+		turtles.removeValue(turtle, true);
+	}*/
 }

@@ -23,8 +23,9 @@ public abstract class Enemy extends Sprite{
 		b2body.setActive(false);
 	}
 	
+	public abstract void onEnemyHit(Enemy enemy);
 	protected abstract void createEnemy();
-	public abstract void hitOnHead();
+	public abstract void hitOnHead(Mario mario);
 	public abstract void update(float dt);
 	public void reverseVelocity(boolean x, boolean y)
 	{
