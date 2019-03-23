@@ -17,6 +17,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.mariobrosclone.MarioBrosClone;
 import com.mygdx.mariobrosclone.Screens.PlayScreen;
+import com.mygdx.mariobrosclone.Sprites.Enemies.Enemy;
+import com.mygdx.mariobrosclone.Sprites.Enemies.Turtle;
 
 public class Mario extends Sprite{
 	public enum State {FALLING, JUMPING, STANDING, GROWING, RUNNING, SHRINKING, DEAD};//shrinking not defined 
@@ -219,15 +221,6 @@ public class Mario extends Sprite{
 		currentState = getState();
 		TextureRegion region;
 		switch(currentState) {
-/*		case SHRINKING:
-			region = (TextureRegion)shrinkMario.getKeyFrame(stateTimer);
-			if(growMario.isAnimationFinished(stateTimer))
-			{
-				runShrinkAnimation = false;
-				//marioIsBig = false;
-			}
-				
-			break;*/
 		case DEAD:
 			region = marioDead;
 			break;
@@ -292,7 +285,7 @@ public class Mario extends Sprite{
 			if(marioIsBig)
 			{
 				timeToRedefineMario = true;
-				//runShrinkAnimation = true;
+				
 				marioIsBig = false;
 				setBounds(getX(), getY(), getWidth(), getHeight()/2);
 				MarioBrosClone.manager.get("audio/sounds/powerdown.wav", Sound.class).play();

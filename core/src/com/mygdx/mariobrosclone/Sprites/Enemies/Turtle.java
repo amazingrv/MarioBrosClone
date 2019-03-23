@@ -1,4 +1,4 @@
-package com.mygdx.mariobrosclone.Sprites;
+package com.mygdx.mariobrosclone.Sprites.Enemies;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.mariobrosclone.MarioBrosClone;
 import com.mygdx.mariobrosclone.Screens.PlayScreen;
+import com.mygdx.mariobrosclone.Sprites.Mario;
 
 public class Turtle extends Enemy {
 

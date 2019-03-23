@@ -12,11 +12,11 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.mariobrosclone.MarioBrosClone;
 import com.mygdx.mariobrosclone.Screens.PlayScreen;
-import com.mygdx.mariobrosclone.Sprites.Brick;
-import com.mygdx.mariobrosclone.Sprites.Coin;
-import com.mygdx.mariobrosclone.Sprites.Enemy;
-import com.mygdx.mariobrosclone.Sprites.Goomba;
-import com.mygdx.mariobrosclone.Sprites.Turtle;
+import com.mygdx.mariobrosclone.Sprites.Enemies.Enemy;
+import com.mygdx.mariobrosclone.Sprites.Enemies.Goomba;
+import com.mygdx.mariobrosclone.Sprites.Enemies.Turtle;
+import com.mygdx.mariobrosclone.Sprites.Tiles.Brick;
+import com.mygdx.mariobrosclone.Sprites.Tiles.Coin;
 
 public class B2DWorldCreater {
 	

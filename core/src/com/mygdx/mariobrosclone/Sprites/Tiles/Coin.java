@@ -1,4 +1,4 @@
-package com.mygdx.mariobrosclone.Sprites;
+package com.mygdx.mariobrosclone.Sprites.Tiles;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -14,6 +14,7 @@ import com.mgdx.mariobrosclone.Items.Mushroom;
 import com.mygdx.mariobrosclone.MarioBrosClone;
 import com.mygdx.mariobrosclone.Scenes.Hud;
 import com.mygdx.mariobrosclone.Screens.PlayScreen;
+import com.mygdx.mariobrosclone.Sprites.Mario;
 
 public class Coin extends InteractiveTileObject {
 	private static TiledMapTileSet tileSet;

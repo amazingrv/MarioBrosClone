@@ -1,4 +1,4 @@
-package com.mygdx.mariobrosclone.Sprites;
+package com.mygdx.mariobrosclone.Sprites.Tiles;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.mariobrosclone.MarioBrosClone;
 import com.mygdx.mariobrosclone.Screens.PlayScreen;
+import com.mygdx.mariobrosclone.Sprites.Mario;
 
 public abstract class InteractiveTileObject {
 	protected World world;
@@ -26,7 +27,7 @@ public abstract class InteractiveTileObject {
 	protected PlayScreen screen;
 	protected MapObject object;
 	
-	Fixture fixture;
+	protected Fixture fixture;
 	
 	public InteractiveTileObject(PlayScreen screen, MapObject object)
 	{

@@ -26,18 +26,16 @@ import com.mgdx.mariobrosclone.Items.ItemDef;
 import com.mgdx.mariobrosclone.Items.Mushroom;
 import com.mygdx.mariobrosclone.MarioBrosClone;
 import com.mygdx.mariobrosclone.Scenes.Hud;
-import com.mygdx.mariobrosclone.Sprites.Enemy;
 import com.mygdx.mariobrosclone.Sprites.Mario;
+import com.mygdx.mariobrosclone.Sprites.Enemies.Enemy;
 import com.mygdx.mariobrosclone.Sprites.Mario.State;
 import com.mygdx.mariobrosclone.Tools.B2DWorldCreater;
 import com.mygdx.mariobrosclone.Tools.WorldContactListner;
 
 public class PlayScreen implements Screen{
 
-	MarioBrosClone game;
+	public MarioBrosClone game;
 	TextureAtlas atlas;
-	
-	float cameraLeftLimit,cameraRightLimit, mapWidth;
 	
 	OrthographicCamera gamecam;
 	Viewport gamePort;
@@ -69,7 +67,7 @@ public class PlayScreen implements Screen{
 	{
 		this.game = game;
 		
-		atlas = new TextureAtlas("Mario_and_Enemies.pack");
+		atlas = new TextureAtlas("Mario_and_Enemies2.atlas");
 		
 		
 		gamecam = new OrthographicCamera();
@@ -79,11 +77,7 @@ public class PlayScreen implements Screen{
 		mapLoader = new TmxMapLoader();
 		map = mapLoader.load("level1.tmx");
 		
-		//testing temp
-		cameraLeftLimit = MarioBrosClone.V_WIDTH / 2;
-        cameraRightLimit =  mapWidth - MarioBrosClone.V_WIDTH / 2;
-		mapWidth = ((TiledMapTileLayer)map.getLayers().get(0)).getWidth();
-		
+			
 		
 		renderer = new OrthogonalTiledMapRenderer(map, 1 / MarioBrosClone.PPM);
 		
