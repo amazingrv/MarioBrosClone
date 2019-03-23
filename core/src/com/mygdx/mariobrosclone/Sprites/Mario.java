@@ -30,14 +30,15 @@ public class Mario extends Sprite{
 	public boolean marioIsBig;
 	boolean marioIsDead;
 	
-	Animation marioRun, marioJump;
+	TextureRegion  marioJump;
 	float stateTimer;
 	boolean runningRight;
 	boolean timeToDefineBigMario;
 	boolean timeToRedefineMario;
 	
+	Animation marioRun;
 	TextureRegion bigMarioStand;
-	Animation bigMarioJump;
+	TextureRegion bigMarioJump;
 	Animation bigMarioRun;
 	Animation shrinkMario, growMario;
 	
@@ -68,22 +69,19 @@ public class Mario extends Sprite{
 		growMario = new Animation(0.2f, frames);
 		frames.clear();
 		
-		frames.add(new TextureRegion(screen.getAtlas().findRegion("big_mario"), 240, 0, 16, 32));
+		/*frames.add(new TextureRegion(screen.getAtlas().findRegion("big_mario"), 240, 0, 16, 32));
 		frames.add(new TextureRegion(screen.getAtlas().findRegion("big_mario"), 0, 0, 16, 32));
 		frames.add(new TextureRegion(screen.getAtlas().findRegion("big_mario"), 240, 0, 16, 32));
 		frames.add(new TextureRegion(screen.getAtlas().findRegion("big_mario"), 0, 0, 16, 32));
 		shrinkMario = new Animation(0.2f, frames);
-		frames.clear();
+		frames.clear();*/
 		
 		marioDead = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 96, 0, 16, 16);
 		
-		for(int i=4; i<6 ; i++)
-			frames.add(new TextureRegion(screen.getAtlas().findRegion("little_mario"), i*16, 0, 16, 16));
-		marioJump = new Animation(0.1f, frames);
-		frames.clear();
-		for(int i=4; i<6 ; i++)
-			frames.add(new TextureRegion(screen.getAtlas().findRegion("big_mario"), i*16, 0, 16, 32));
-		bigMarioJump = new Animation(0.1f, frames);		
+		
+		marioJump = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 5*16, 0, 16, 16);
+		
+		bigMarioJump = new TextureRegion(screen.getAtlas().findRegion("big_mario"), 5*16, 0, 16, 32);		
 		
 		marioStand = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 0, 0, 16, 16);
 		bigMarioStand = new TextureRegion(screen.getAtlas().findRegion("big_mario"), 0, 0, 16, 32);
@@ -242,7 +240,7 @@ public class Mario extends Sprite{
 					
 				break;
 		case JUMPING:
-				region = marioIsBig ? (TextureRegion)bigMarioJump.getKeyFrame(stateTimer) : (TextureRegion)marioJump.getKeyFrame(stateTimer);
+				region = marioIsBig ? bigMarioJump : marioJump;
 				break;
 		case RUNNING:
 			region = marioIsBig ? (TextureRegion)bigMarioRun.getKeyFrame(stateTimer, true) : (TextureRegion)marioRun.getKeyFrame(stateTimer, true);

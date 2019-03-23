@@ -138,9 +138,9 @@ public class PlayScreen implements Screen{
 					
 					player.b2body.applyLinearImpulse(new Vector2(0, JumpVelocity), player.b2body.getWorldCenter(), true);
 					player.currentState = State.JUMPING;
-					//if(player.marioIsBig)
-						//MarioBrosClone.manager.get("audio/sounds/jump_big.wav", Sound.class).play();
-					//else
+					if(player.marioIsBig)
+						MarioBrosClone.manager.get("audio/sounds/jump_big.wav", Sound.class).play();
+					else
 						MarioBrosClone.manager.get("audio/sounds/jump_small.wav", Sound.class).play();
 						
 				}
@@ -222,6 +222,7 @@ public class PlayScreen implements Screen{
 		if(gameOver())
 		{
 			game.setScreen(new GameOver(game));
+			MarioBrosClone.manager.get("audio/sounds/gameover.wav", Sound.class).play();
 			dispose();
 		}
 	}

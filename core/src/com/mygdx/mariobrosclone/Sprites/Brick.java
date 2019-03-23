@@ -2,6 +2,8 @@ package com.mygdx.mariobrosclone.Sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -12,16 +14,16 @@ import com.mygdx.mariobrosclone.Scenes.Hud;
 import com.mygdx.mariobrosclone.Screens.PlayScreen;
 
 public class Brick extends InteractiveTileObject {
-	
+
 	Vector2 originalPosition, targetPosition, movablePosition;
-	
+
 	public Brick(PlayScreen screen, MapObject object)
 	{
 		super(screen, object);
 		BodyDef bdef = new BodyDef();
 		FixtureDef fdef = new FixtureDef();
 		PolygonShape shape = new PolygonShape();
-		
+
 		bdef.type = BodyDef.BodyType.KinematicBody;
 		bdef.position.set((bounds.getX() + bounds.getWidth() / 2) / MarioBrosClone.PPM, (bounds.getY() + bounds.getHeight() / 2) / MarioBrosClone.PPM);
 		body = world.createBody(bdef);
@@ -30,8 +32,8 @@ public class Brick extends InteractiveTileObject {
 		fdef.filter.categoryBits = MarioBrosClone.BRICK_BIT;
 		fixture = body.createFixture(fdef);
 		fixture.setUserData(this);
-		
-		
+
+
 		/*originalPosition = new Vector2(body.getPosition().x, body.getPosition().y);
 		targetPosition  = originalPosition;
 		movablePosition = new Vector2(body.getPosition().x, body.getPosition().y + 0.2f);
@@ -41,7 +43,6 @@ public class Brick extends InteractiveTileObject {
 	public void onHeadHit(Mario mario) {
 		if(mario.marioIsBig)
 		{
-		// TODO Auto-generated method stub
 			Gdx.app.log("Brick","Hit");
 			setCategoryFilter(MarioBrosClone.DESTROYED_BIT);
 			getCell().setTile(null);
@@ -52,9 +53,9 @@ public class Brick extends InteractiveTileObject {
 		{
 			//targetPosition = movablePosition;
 			//playshound
-			
+
 		}
-			
+
 	}
-	
+
 }
