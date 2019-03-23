@@ -330,7 +330,10 @@ public class Mario extends Sprite{
 			filter.maskBits = MarioBrosClone.NOTHING_BIT;
 			for(Fixture fixture: b2body.getFixtureList())
 				fixture.setFilterData(filter);
-			b2body.applyLinearImpulse(new Vector2(0, 6f), b2body.getWorldCenter(), true);
+			if(b2body.getPosition().y < 0)
+				b2body.applyLinearImpulse(new Vector2(0, 6f), b2body.getWorldCenter(), true);
+			else
+				b2body.applyLinearImpulse(new Vector2(0, 4f), b2body.getWorldCenter(), true);
 		}
 	}
 }

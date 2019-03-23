@@ -103,7 +103,7 @@ public class PlayScreen implements Screen{
 		//handling bakground music
 		music = MarioBrosClone.manager.get("audio/music/mario_music.ogg", Music.class);
 		music.setLooping(true);
-		music.play();
+		//music.play();
 		
 		//goomba = new Goomba(this);
 		items = new Array<Item>();
@@ -183,8 +183,8 @@ public class PlayScreen implements Screen{
 		renderer.setView(gamecam);
 	
 		//testin purpose
-		System.out.println(mapWidth + " " + player.b2body.getPosition().x);
-		System.out.println("GameCam pos : " + gamecam.position.x +" " + gamecam.position.y);
+		//System.out.println(mapWidth + " " + player.b2body.getPosition().x);
+		//System.out.println("GameCam pos : " + gamecam.position.x +" " + gamecam.position.y);
 	}
 	@Override
 	public void show() {

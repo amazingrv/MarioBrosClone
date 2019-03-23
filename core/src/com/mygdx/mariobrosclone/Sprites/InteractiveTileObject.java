@@ -1,10 +1,12 @@
 package com.mygdx.mariobrosclone.Sprites;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Filter;
@@ -33,17 +35,6 @@ public abstract class InteractiveTileObject {
 		this.world = screen.getWorld();
 		this.map = screen.getMap();
 		this.bounds = ((RectangleMapObject)object).getRectangle();
-		
-		BodyDef bdef = new BodyDef();
-		FixtureDef fdef = new FixtureDef();
-		PolygonShape shape = new PolygonShape();
-		
-		bdef.type = BodyDef.BodyType.StaticBody;
-		bdef.position.set((bounds.getX() + bounds.getWidth() / 2) / MarioBrosClone.PPM, (bounds.getY() + bounds.getHeight() / 2) / MarioBrosClone.PPM);
-		body = world.createBody(bdef);
-		shape.setAsBox((bounds.getWidth() / 2) / MarioBrosClone.PPM, (bounds.getHeight() / 2) / MarioBrosClone.PPM);
-		fdef.shape = shape;
-		fixture = body.createFixture(fdef);
 	}
 	
 	public abstract void onHeadHit(Mario mario);
@@ -57,4 +48,6 @@ public abstract class InteractiveTileObject {
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
 		return layer.getCell((int)(body.getPosition().x * MarioBrosClone.PPM / 16), (int) (body.getPosition().y * MarioBrosClone.PPM / 16));
 	}
+	
+	
 }
