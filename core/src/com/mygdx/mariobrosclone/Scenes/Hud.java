@@ -16,7 +16,7 @@ public class Hud implements Disposable{
 	public Stage stage;
 	Viewport viewport;
 	private OrthographicCamera cam;
-	Integer worldTimer;
+	public Integer worldTimer;
 	float timeCount;
 	static Integer score;
 	
@@ -29,7 +29,7 @@ public class Hud implements Disposable{
 	
 	public Hud(SpriteBatch batch)
 	{
-		worldTimer = 300;
+		worldTimer = 10;
 		timeCount = 0;
 		score = 0;
 		cam = new OrthographicCamera(); 

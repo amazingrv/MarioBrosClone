@@ -1,4 +1,4 @@
-package com.mgdx.mariobrosclone.Items;
+package com.mygdx.mariobrosclone.Sprites.Items;
 
 import com.badlogic.gdx.math.Vector2;
 

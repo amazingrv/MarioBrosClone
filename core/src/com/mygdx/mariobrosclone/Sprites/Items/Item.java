@@ -1,4 +1,4 @@
-package com.mgdx.mariobrosclone.Items;
+package com.mygdx.mariobrosclone.Sprites.Items;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;

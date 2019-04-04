@@ -1,4 +1,4 @@
-package com.mgdx.mariobrosclone.Items;
+package com.mygdx.mariobrosclone.Sprites.Items;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -45,7 +45,8 @@ public class Mushroom extends Item {
 	@Override
 	public void used(Mario mario) {
 		destroy();
-		mario.grow();
+		if(!mario.marioIsBig)			//if mario is already big dont consume mushrrom
+			mario.grow();
 		
 	}
 

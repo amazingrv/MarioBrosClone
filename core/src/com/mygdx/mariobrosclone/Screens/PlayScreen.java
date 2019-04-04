@@ -21,13 +21,13 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mgdx.mariobrosclone.Items.Item;
-import com.mgdx.mariobrosclone.Items.ItemDef;
-import com.mgdx.mariobrosclone.Items.Mushroom;
 import com.mygdx.mariobrosclone.MarioBrosClone;
 import com.mygdx.mariobrosclone.Scenes.Hud;
 import com.mygdx.mariobrosclone.Sprites.Mario;
 import com.mygdx.mariobrosclone.Sprites.Enemies.Enemy;
+import com.mygdx.mariobrosclone.Sprites.Items.Item;
+import com.mygdx.mariobrosclone.Sprites.Items.ItemDef;
+import com.mygdx.mariobrosclone.Sprites.Items.Mushroom;
 import com.mygdx.mariobrosclone.Sprites.Mario.State;
 import com.mygdx.mariobrosclone.Tools.B2DWorldCreater;
 import com.mygdx.mariobrosclone.Tools.WorldContactListner;
@@ -229,6 +229,8 @@ public class PlayScreen implements Screen{
 	public boolean gameOver()
 	{
 		if(player.currentState == Mario.State.DEAD && player.getStateTimer() > 3)
+			return true;
+		if(hud.worldTimer <= 0)
 			return true;
 		return false;
 	}

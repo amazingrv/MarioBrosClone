@@ -9,12 +9,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.mgdx.mariobrosclone.Items.ItemDef;
-import com.mgdx.mariobrosclone.Items.Mushroom;
 import com.mygdx.mariobrosclone.MarioBrosClone;
 import com.mygdx.mariobrosclone.Scenes.Hud;
 import com.mygdx.mariobrosclone.Screens.PlayScreen;
 import com.mygdx.mariobrosclone.Sprites.Mario;
+import com.mygdx.mariobrosclone.Sprites.Items.ItemDef;
+import com.mygdx.mariobrosclone.Sprites.Items.Mushroom;
 
 public class Coin extends InteractiveTileObject {
 	private static TiledMapTileSet tileSet;
@@ -55,7 +55,7 @@ public class Coin extends InteractiveTileObject {
 			Hud.addScore(150);
 			if(object.getProperties().containsKey("mushroom"))
 			{
-				screen.spawnItem(new ItemDef(Mushroom.class, new Vector2(body.getPosition().x, body.getPosition().y + 16 / MarioBrosClone.PPM)));
+				screen.spawnItem(new com.mygdx.mariobrosclone.Sprites.Items.ItemDef(com.mygdx.mariobrosclone.Sprites.Items.Mushroom.class, new Vector2(body.getPosition().x, body.getPosition().y + 16 / MarioBrosClone.PPM)));
 				MarioBrosClone.manager.get("audio/sounds/powerup_spawn.wav", Sound.class).play();
 			}
 			else
