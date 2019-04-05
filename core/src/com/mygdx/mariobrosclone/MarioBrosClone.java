@@ -5,7 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.mariobrosclone.Screens.PlayScreen;
+import com.mygdx.mariobrosclone.Screens.GameOver;
 
 public class MarioBrosClone extends Game {
 	public SpriteBatch batch;
@@ -45,7 +45,7 @@ public class MarioBrosClone extends Game {
 		manager.load("audio/sounds/mariodie.wav", Sound.class);
 		manager.load("audio/sounds/gameover.wav", Sound.class);
 		manager.finishLoading();
-		setScreen(new PlayScreen(this));
+		setScreen(new GameOver(this));
 		
 	}
 

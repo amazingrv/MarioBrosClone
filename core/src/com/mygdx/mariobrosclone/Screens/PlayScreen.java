@@ -67,7 +67,7 @@ public class PlayScreen implements Screen{
 	{
 		this.game = game;
 		
-		atlas = new TextureAtlas("Mario_and_Enemies2.atlas");
+		atlas = new TextureAtlas("Mario_and_Enemies.atlas");
 		
 		
 		gamecam = new OrthographicCamera();

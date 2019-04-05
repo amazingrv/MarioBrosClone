@@ -101,8 +101,8 @@ public class B2DWorldCreater {
 		return enemy;
 	}
 	
-	/*public void clearTurtle(Turtle turtle)
+	public void clearTurtle(Turtle turtle)
 	{
 		turtles.removeValue(turtle, true);
-	}*/
+	}
 }
