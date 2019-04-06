@@ -23,7 +23,7 @@ public class Goomba extends Enemy{
 		
 		boolean setToDestroy;
 		boolean destroyed;
-		
+		s
 	public Goomba(PlayScreen screen, float x, float y)
 	{
 		super(screen, x, y);
