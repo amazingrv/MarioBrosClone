@@ -10,6 +10,8 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 800;
 		config.height = 400;
-		new LwjglApplication(new MarioBrosClone(), config);
+		
+		//if(new Menu().createMenu())
+			new LwjglApplication(new MarioBrosClone(), config);
 	}
 }
