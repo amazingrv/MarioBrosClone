@@ -40,7 +40,7 @@ public class GameOver extends Sprite implements Screen{
 		this.game = game;
 		viewport = new FitViewport(MarioBrosClone.V_WIDTH, MarioBrosClone.V_HEIGHT, new OrthographicCamera());
 		stage = new Stage(viewport, ((MarioBrosClone) game).batch);
-		atlas = new TextureAtlas("Mario_and_Enemies.atlas");
+		atlas = new TextureAtlas("Mario_and_Enemies.pack");
 		
 		for(int i =1 ; i<4 ;i++)
 		{
