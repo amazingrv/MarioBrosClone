@@ -29,7 +29,7 @@ public class Hud implements Disposable{
 	
 	public Hud(SpriteBatch batch)
 	{
-		worldTimer = 10;
+		worldTimer = 300;
 		timeCount = 0;
 		score = 0;
 		cam = new OrthographicCamera(); 

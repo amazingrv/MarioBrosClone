@@ -24,7 +24,7 @@ public class GameOver extends Sprite implements Screen{
 	Stage stage;
 	MarioBrosClone game;
 	
-	SpriteBatch batch;
+	//SpriteBatch batch;
 	TextureAtlas atlas;
 	TextureRegion mario[];
 	float timer;
@@ -32,15 +32,15 @@ public class GameOver extends Sprite implements Screen{
 	
 	public GameOver(MarioBrosClone game) {
 		
-		batch = game.batch;
+		//batch = game.batch;
 		timer = 0;
 		flagImage = 0;
 		mario = new TextureRegion[3];
 		// TODO Auto-generated constructor stub
 		this.game = game;
 		viewport = new FitViewport(MarioBrosClone.V_WIDTH, MarioBrosClone.V_HEIGHT, new OrthographicCamera());
-		stage = new Stage(viewport, ((MarioBrosClone) game).batch);
-		atlas = new TextureAtlas("Mario_and_Enemies.atlas");
+		stage = new Stage(viewport, game.batch);
+		atlas = new TextureAtlas("Mario_and_Enemies.pack");
 		
 		for(int i =1 ; i<4 ;i++)
 		{
@@ -49,7 +49,7 @@ public class GameOver extends Sprite implements Screen{
 		Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
 		Label gameOverLabel = new Label("GAME OVER", font);
 		Label playAgainLabel = new Label("Press 'S' Key to Play Again", font);
-		Label livesLabel = new Label("X 3", font);
+		
 		
 		Table table = new Table();
 		table.top();
@@ -74,9 +74,10 @@ public class GameOver extends Sprite implements Screen{
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stage.draw();
-		batch.begin();
-		batch.draw(getFrame(delta), 10,10);
-		batch.end();
+		game.batch.begin();
+		game.batch.draw(getFrame(delta), 180,100);
+		game.batch.draw(getFrame(delta), 210,100);
+		game.batch.end();
 		}
 	
 	public void update(float dt)
@@ -88,8 +89,7 @@ public class GameOver extends Sprite implements Screen{
 			game.setScreen(new PlayScreen((MarioBrosClone)game));
 			dispose();
 		}
-		setPosition(10, 10);
-		setRegion(getFrame(dt));
+		
 	}
 	
 	public TextureRegion getFrame(float dt)
@@ -147,7 +147,6 @@ public class GameOver extends Sprite implements Screen{
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 		stage.dispose();
 	}
 
