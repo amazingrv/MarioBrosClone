@@ -3,7 +3,6 @@ package com.mygdx.mariobrosclone.Screens;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -22,7 +21,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.mariobrosclone.MarioBrosClone;
 import com.mygdx.mariobrosclone.Scenes.Hud;
 import com.mygdx.mariobrosclone.Sprites.Mario;
-import com.mygdx.mariobrosclone.Sprites.Mario.State;
 import com.mygdx.mariobrosclone.Sprites.Enemies.Enemy;
 import com.mygdx.mariobrosclone.Sprites.Items.Item;
 import com.mygdx.mariobrosclone.Sprites.Items.ItemDef;
@@ -40,7 +38,7 @@ public class PlayScreen implements Screen {
 	Viewport gamePort;
 	Hud hud;
 
-	FlagPole flagPole;
+	FlagPole flag;
 
 	// Box 2d
 	private World world;
@@ -57,12 +55,6 @@ public class PlayScreen implements Screen {
 	LinkedBlockingQueue<ItemDef> itemsToSpawn;
 
 	private Music music;
-
-	final float JumpVelocity = 4f;
-	final float RightVelocity = 0.1f;
-	final float LeftVelocity = -0.1f;
-	final int maxRightVelocity = 2;
-	final int maxLeftVelocity = -2;
 
 	public PlayScreen(MarioBrosClone game) {
 		this.game = game;
@@ -95,7 +87,7 @@ public class PlayScreen implements Screen {
 		// handling bakground music
 		music = MarioBrosClone.manager.get("audio/music/mario_music.ogg", Music.class);
 		music.setLooping(true);
-		// music.play();
+		music.play();
 
 		// goomba = new Goomba(this);
 		items = new Array<Item>();
@@ -116,37 +108,17 @@ public class PlayScreen implements Screen {
 		}
 	}
 
-	public void handleInput(float deltaTime) {
-		if (player.currentState != Mario.State.DEAD) {
-			if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-				if (player.getState() != player.currentState.JUMPING) {
-
-					player.b2body.applyLinearImpulse(new Vector2(0, JumpVelocity), player.b2body.getWorldCenter(),
-							true);
-					player.currentState = State.JUMPING;
-					if (player.marioIsBig)
-						MarioBrosClone.manager.get("audio/sounds/jump_big.wav", Sound.class).play();
-					else
-						MarioBrosClone.manager.get("audio/sounds/jump_small.wav", Sound.class).play();
-
-				}
-			}
-			if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= maxRightVelocity)
-				player.b2body.applyLinearImpulse(new Vector2(RightVelocity, 0), player.b2body.getWorldCenter(), true);
-			if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= maxLeftVelocity)
-				player.b2body.applyLinearImpulse(new Vector2(LeftVelocity, 0), player.b2body.getWorldCenter(), true);
-		}
-	}
-
 	public TextureAtlas getAtlas() {
 		return atlas;
 	}
 
 	public void update(float deltaTime) {
-		handleInput(deltaTime);
+
 		handleSpawningItems();
 		player.update(deltaTime);
 		hud.update(deltaTime);
+		flag.update(deltaTime);
+
 		for (Enemy enemy : creator.getEnemies()) {
 			enemy.update(deltaTime);
 			if (enemy.getX() < player.getX() + 224 / MarioBrosClone.PPM)
@@ -191,7 +163,7 @@ public class PlayScreen implements Screen {
 		renderer.render();
 
 		// render Box2d Object lines
-		box2dr.render(world, gamecam.combined);
+		// box2dr.render(world, gamecam.combined);
 
 		game.batch.setProjectionMatrix(gamecam.combined);
 		game.batch.begin();
@@ -205,10 +177,14 @@ public class PlayScreen implements Screen {
 		// Set batch to draw hud of game
 		game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
 		hud.stage.draw();
-
+		flag.draw(game.batch);
 		if (gameOver()) {
 			game.setScreen(new GameOver(game));
 			MarioBrosClone.manager.get("audio/sounds/gameover.wav", Sound.class).play();
+			dispose();
+		}
+		if (goal()) {
+			game.setScreen(new WonScreen(game));
 			dispose();
 		}
 	}
@@ -225,6 +201,10 @@ public class PlayScreen implements Screen {
 		if (hud.worldTimer <= 0)
 			return true;
 		return false;
+	}
+
+	private boolean goal() {
+		return (player.currentState == Mario.State.WON && player.getStateTimer() > 3);
 	}
 
 	@Override
@@ -278,9 +258,9 @@ public class PlayScreen implements Screen {
 		return game;
 	}
 
-	public void setFlag(FlagPole flagPole) {
+	public void setFlag(FlagPole flag) {
 		// TODO Auto-generated method stub
-		this.flagPole = flagPole;
+		this.flag = flag;
 	}
 
 }

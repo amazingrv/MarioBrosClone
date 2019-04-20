@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -33,42 +32,39 @@ public class FlagPole extends InteractiveTileObject {
 		PolygonShape shape = new PolygonShape();
 
 		bdef.type = BodyDef.BodyType.StaticBody;
+		System.out.print(bounds.getX() + " " + bounds.getWidth());
 		bdef.position.set((bounds.getX() + bounds.getWidth() / 2) / MarioBrosClone.PPM,
 				(bounds.getY() + bounds.getHeight() / 2) / MarioBrosClone.PPM);
 		body = world.createBody(bdef);
 		shape.setAsBox((bounds.getWidth() / 2) / MarioBrosClone.PPM, (bounds.getHeight() / 2) / MarioBrosClone.PPM);
 		fdef.shape = shape;
-		fdef.filter.categoryBits = MarioBrosClone.BRICK_BIT;
+		fdef.filter.categoryBits = MarioBrosClone.FLAG_POLE_BIT;
+		// fdef.filter.maskBits = MarioBrosClone.MARIO_BIT |
+		// MarioBrosClone.MARIO_HEAD_BIT | MarioBrosClone.GROUND_BIT
+		// | MarioBrosClone.OBJECT_BIT;
 		fixture = body.createFixture(fdef);
 		fixture.setUserData(this);
-		// setCategoryFilter(MarioBrosClone.FLAG_POLE_BIT);
-		// fixture.setUserData(this);
-
-		createAnchor();
+		createFlag();
 		flag = new Flag(screen, body.getPosition().x, body.getPosition().y, this);
 	}
 
-	private void createAnchor() {
-		Vector2 position = new Vector2(body.getPosition().x - 8 / MarioBrosClone.PPM,
-				body.getPosition().y + 64 / MarioBrosClone.PPM);
-		Vector2 boxDims = new Vector2(16 / 2 / MarioBrosClone.PPM, 16 / 2 / MarioBrosClone.PPM);
+	private void createFlag() {
+		Vector2 pos = new Vector2(body.getPosition().x - 8 / MarioBrosClone.PPM,
+				body.getPosition().y + 20 / MarioBrosClone.PPM);
+		Vector2 dims = new Vector2(16 / MarioBrosClone.PPM, 16 / MarioBrosClone.PPM);
 
 		BodyDef bdef = new BodyDef();
 		FixtureDef fdef = new FixtureDef();
-		bdef.type = BodyType.StaticBody;
-		bdef.position.set(position);
-		world.createBody(bdef);
-
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(boxDims.x, boxDims.y);
+
+		bdef.type = BodyType.StaticBody;
+		bdef.position.set(pos);
+
+		flagStart = world.createBody(bdef);
+		shape.setAsBox(dims.x / 2, dims.y / 2);
 		fdef.shape = shape;
 		fdef.filter.categoryBits = MarioBrosClone.FLAG_BIT;
-
 		flagStart.createFixture(fdef).setUserData(this);
-		;
-
-		for (Fixture fixture : flagStart.getFixtureList())
-			fixture.setUserData(this);
 
 	}
 
@@ -136,6 +132,7 @@ public class FlagPole extends InteractiveTileObject {
 		public void pullFlag(Mario mario) {
 			if (!down) {
 				down = true;
+				System.out.println("\n" + pole.flagStart.getPosition().x + " pullFlag() -> goal()mario");
 				mario.goal(pole.flagStart.getPosition().x);
 			}
 		}

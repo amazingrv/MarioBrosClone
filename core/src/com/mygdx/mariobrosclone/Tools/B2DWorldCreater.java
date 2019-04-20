@@ -43,7 +43,7 @@ public class B2DWorldCreater {
 			body = world.createBody(bdef);
 			shape.setAsBox((rect.getWidth() / 2) / MarioBrosClone.PPM, (rect.getHeight() / 2) / MarioBrosClone.PPM);
 			fdef.shape = shape;
-
+			fdef.filter.categoryBits = MarioBrosClone.GROUND_BIT;
 			body.createFixture(fdef);
 		}
 

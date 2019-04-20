@@ -241,6 +241,5 @@
  </objectgroup>
  <objectgroup id="10" name="Flag">
   <object id="164" x="3184.5" y="32" width="15" height="144"/>
-  <object id="165" x="3217" y="104" width="1" height="0.5"/>
  </objectgroup>
 </map>

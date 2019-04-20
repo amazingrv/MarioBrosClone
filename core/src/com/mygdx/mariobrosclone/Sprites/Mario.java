@@ -1,5 +1,7 @@
 package com.mygdx.mariobrosclone.Sprites;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -22,7 +24,7 @@ import com.mygdx.mariobrosclone.Sprites.Enemies.Turtle;
 
 public class Mario extends Sprite {
 	public enum State {
-		FALLING, JUMPING, STANDING, GROWING, RUNNING, SHRINKING, DEAD
+		FALLING, JUMPING, STANDING, GROWING, RUNNING, CLIMBING, SHRINKING, DEAD, WON
 	};// shrinking not defined
 
 	public State currentState, previousState;
@@ -30,6 +32,7 @@ public class Mario extends Sprite {
 	public Body b2body;
 	TextureRegion marioStand;
 	TextureRegion marioDead;
+	TextureRegion marioClimb, bigMarioClimb;
 
 	boolean runGrowAnimation, runShrinkAnimation;
 	public boolean marioIsBig;
@@ -50,6 +53,13 @@ public class Mario extends Sprite {
 	// flag var's
 	float flagPosition;
 	boolean climb, completeLevel;
+	boolean marioWins;
+
+	final float JumpVelocity = 4f;
+	final float RightVelocity = 0.1f;
+	final float LeftVelocity = -0.1f;
+	final int maxRightVelocity = 2;
+	final int maxLeftVelocity = -2;
 
 	public Mario(PlayScreen screen) {
 		this.world = screen.getWorld();
@@ -87,6 +97,10 @@ public class Mario extends Sprite {
 		 * shrinkMario = new Animation(0.2f, frames); frames.clear();
 		 */
 
+		marioClimb = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 128, 0, 16, 16);
+
+		bigMarioClimb = new TextureRegion(screen.getAtlas().findRegion("big_mario"), 128, 0, 16, 16);
+
 		marioDead = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 96, 0, 16, 16);
 
 		marioJump = new TextureRegion(screen.getAtlas().findRegion("little_mario"), 5 * 16, 0, 16, 16);
@@ -102,7 +116,7 @@ public class Mario extends Sprite {
 		runGrowAnimation = false;
 		marioIsBig = false;
 
-		climb = completeLevel = false;
+		climb = completeLevel = marioWins = false;
 	}
 
 	public void grow() {
@@ -131,7 +145,7 @@ public class Mario extends Sprite {
 		fdef.filter.categoryBits = MarioBrosClone.MARIO_BIT;
 		fdef.filter.maskBits = MarioBrosClone.GROUND_BIT | MarioBrosClone.BRICK_BIT | MarioBrosClone.COIN_BIT
 				| MarioBrosClone.ENEMY_BIT | MarioBrosClone.OBJECT_BIT | MarioBrosClone.ENEMY_HEAD_BIT
-				| MarioBrosClone.ITEM_BIT;
+				| MarioBrosClone.ITEM_BIT | MarioBrosClone.FLAG_POLE_BIT;
 
 		fdef.shape = shape;
 		b2body.createFixture(fdef).setUserData(this);
@@ -146,6 +160,11 @@ public class Mario extends Sprite {
 	}
 
 	public void update(float dt) {
+		if (!marioWins && !marioIsDead)
+			handleInput(dt);
+		if (completeLevel)
+			finishLevel();
+
 		if (marioIsBig)// || runShrinkAnimation
 			setPosition(b2body.getPosition().x - getWidth() / 2,
 					b2body.getPosition().y - getHeight() / 2 - 6 / MarioBrosClone.PPM);
@@ -180,7 +199,7 @@ public class Mario extends Sprite {
 		fdef.filter.categoryBits = MarioBrosClone.MARIO_BIT;
 		fdef.filter.maskBits = MarioBrosClone.GROUND_BIT | MarioBrosClone.BRICK_BIT | MarioBrosClone.COIN_BIT
 				| MarioBrosClone.ENEMY_BIT | MarioBrosClone.OBJECT_BIT | MarioBrosClone.ENEMY_HEAD_BIT
-				| MarioBrosClone.ITEM_BIT;
+				| MarioBrosClone.ITEM_BIT | MarioBrosClone.FLAG_POLE_BIT;
 
 		fdef.shape = shape;
 		b2body.createFixture(fdef).setUserData(this);
@@ -211,7 +230,7 @@ public class Mario extends Sprite {
 		fdef.filter.categoryBits = MarioBrosClone.MARIO_BIT;
 		fdef.filter.maskBits = MarioBrosClone.GROUND_BIT | MarioBrosClone.BRICK_BIT | MarioBrosClone.COIN_BIT
 				| MarioBrosClone.ENEMY_BIT | MarioBrosClone.OBJECT_BIT | MarioBrosClone.ENEMY_HEAD_BIT
-				| MarioBrosClone.ITEM_BIT;
+				| MarioBrosClone.ITEM_BIT | MarioBrosClone.FLAG_POLE_BIT;
 
 		fdef.shape = shape;
 		b2body.createFixture(fdef).setUserData(this);
@@ -249,8 +268,12 @@ public class Mario extends Sprite {
 			region = marioIsBig ? (TextureRegion) bigMarioRun.getKeyFrame(stateTimer, true)
 					: (TextureRegion) marioRun.getKeyFrame(stateTimer, true);
 			break;
+		case CLIMBING:
+			region = marioIsBig ? bigMarioClimb : marioClimb;
+			break;
 		case FALLING:
 		case STANDING:
+		case WON:
 		default:
 			region = marioIsBig ? bigMarioStand : marioStand;
 		}
@@ -274,6 +297,14 @@ public class Mario extends Sprite {
 			return State.DEAD;
 		else if (runGrowAnimation)
 			return State.GROWING;
+		else if (climb) {
+			if (stateTimer >= 2.5f) {
+				climb = false;
+				stateTimer = 0;
+			}
+			return State.CLIMBING;
+		} else if (marioWins)
+			return State.WON;
 		else if (b2body.getLinearVelocity().y > 0
 				|| (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING))
 			return State.JUMPING;
@@ -330,9 +361,56 @@ public class Mario extends Sprite {
 	}
 
 	public void goal(float flagPosition) {
-		climb = true;
-		completeLevel = true;
-		this.flagPosition = flagPosition;
+		climb = true; // set the climb texture
+		completeLevel = true; // run the complete sequence
+		this.flagPosition = flagPosition; // flagPosition
 
+	}
+
+	public void finishLevel() {
+		System.out.println("flag height = " + flagPosition + "\tB2body : " + b2body.getPosition().y);
+		if (climb) {
+			System.out.println(getState());
+			if (b2body.getPosition().y <= 60 / MarioBrosClone.PPM) {
+				runningRight = false;
+				b2body.setTransform(flagPosition + 16 / MarioBrosClone.PPM, b2body.getPosition().y, 0);
+				// b2body.setType(BodyDef.BodyType.StaticBody);
+			} else {
+				System.out.print("y is bigger");
+				runningRight = true;
+				b2body.setTransform(flagPosition + 4 / MarioBrosClone.PPM, b2body.getPosition().y, 0);
+			}
+			b2body.setLinearVelocity(new Vector2(0, -0.70f)); // to get the mario down
+		} else {
+			System.out.println(getState());
+			if (getX() < 32.70f)
+				b2body.applyLinearImpulse(new Vector2(b2body.getMass() * (1.0f - b2body.getLinearVelocity().x), 0.0f),
+						b2body.getWorldCenter(), true);
+			else {
+				marioWins = true;
+			}
+		}
+
+	}
+
+	public void handleInput(float deltaTime) {
+		if (currentState != Mario.State.DEAD) {
+			if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+				if (getState() != currentState.JUMPING) {
+
+					b2body.applyLinearImpulse(new Vector2(0, JumpVelocity), b2body.getWorldCenter(), true);
+					currentState = State.JUMPING;
+					if (marioIsBig)
+						MarioBrosClone.manager.get("audio/sounds/jump_big.wav", Sound.class).play();
+					else
+						MarioBrosClone.manager.get("audio/sounds/jump_small.wav", Sound.class).play();
+
+				}
+			}
+			if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && b2body.getLinearVelocity().x <= maxRightVelocity)
+				b2body.applyLinearImpulse(new Vector2(RightVelocity, 0), b2body.getWorldCenter(), true);
+			if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && b2body.getLinearVelocity().x >= maxLeftVelocity)
+				b2body.applyLinearImpulse(new Vector2(LeftVelocity, 0), b2body.getWorldCenter(), true);
+		}
 	}
 }
