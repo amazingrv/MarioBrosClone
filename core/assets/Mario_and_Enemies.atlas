@@ -1,5 +1,5 @@
 
-Mario_and_Enemies2.png
+Mario_and_Enemies.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -38,11 +38,11 @@ fireball
   orig: 32, 8
   offset: 0, 0
   index: -1
-brick_shatter
+flag
   rotate: false
-  xy: 437, 45
-  size: 16, 16
-  orig: 16, 16
+  xy: 437, 43
+  size: 17, 18
+  orig: 17, 18
   offset: 0, 0
   index: -1
 mushroom
@@ -50,12 +50,5 @@ mushroom
   xy: 277, 11
   size: 16, 16
   orig: 16, 16
-  offset: 0, 0
-  index: -1
-brick_piece
-  rotate: false
-  xy: 35, 1
-  size: 8, 8
-  orig: 8, 8
   offset: 0, 0
   index: -1
