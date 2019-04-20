@@ -17,92 +17,91 @@ import com.mygdx.mariobrosclone.Sprites.Enemies.Goomba;
 import com.mygdx.mariobrosclone.Sprites.Enemies.Turtle;
 import com.mygdx.mariobrosclone.Sprites.Tiles.Brick;
 import com.mygdx.mariobrosclone.Sprites.Tiles.Coin;
+import com.mygdx.mariobrosclone.Sprites.Tiles.FlagPole;
 
 public class B2DWorldCreater {
-	
+
 	Array<Goomba> goombas;
 	Array<Turtle> turtles;
-	
-	public B2DWorldCreater(PlayScreen  screen)
-	{
+
+	public B2DWorldCreater(PlayScreen screen) {
 		World world = screen.getWorld();
 		TiledMap map = screen.getMap();
-		
+
 		BodyDef bdef = new BodyDef();
 		PolygonShape shape = new PolygonShape();
 		FixtureDef fdef = new FixtureDef();
 		Body body;
-		
-		//ground bodies/fixtures
-		for(MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class))
-		{
+
+		// ground bodies/fixtures
+		for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
 			Rectangle rect = ((RectangleMapObject) object).getRectangle();
 			bdef.type = BodyDef.BodyType.StaticBody;
-			bdef.position.set((rect.getX() + rect.getWidth() / 2) / MarioBrosClone.PPM, (rect.getY() + rect.getHeight() / 2) / MarioBrosClone.PPM);
-			
+			bdef.position.set((rect.getX() + rect.getWidth() / 2) / MarioBrosClone.PPM,
+					(rect.getY() + rect.getHeight() / 2) / MarioBrosClone.PPM);
+
 			body = world.createBody(bdef);
 			shape.setAsBox((rect.getWidth() / 2) / MarioBrosClone.PPM, (rect.getHeight() / 2) / MarioBrosClone.PPM);
 			fdef.shape = shape;
-			
+
 			body.createFixture(fdef);
 		}
-		
-		//pipe bodies/fixtures
-		for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class))
-		{
+
+		// pipe bodies/fixtures
+		for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
 			Rectangle rect = ((RectangleMapObject) object).getRectangle();
 			bdef.type = BodyDef.BodyType.StaticBody;
-			bdef.position.set((rect.getX() + rect.getWidth() / 2) / MarioBrosClone.PPM, (rect.getY() + rect.getHeight() / 2) / MarioBrosClone.PPM);
-			
+			bdef.position.set((rect.getX() + rect.getWidth() / 2) / MarioBrosClone.PPM,
+					(rect.getY() + rect.getHeight() / 2) / MarioBrosClone.PPM);
+
 			body = world.createBody(bdef);
 			shape.setAsBox((rect.getWidth() / 2) / MarioBrosClone.PPM, (rect.getHeight() / 2) / MarioBrosClone.PPM);
 			fdef.shape = shape;
 			fdef.filter.categoryBits = MarioBrosClone.OBJECT_BIT;
 			body.createFixture(fdef);
 		}
-		
-		
-		//bricks bodies/fixtures
-		for(MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class))
-		{
+
+		// bricks bodies/fixtures
+		for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
 			new Brick(screen, object);
 		}
 
-		//coin bodies/fixtures
-		for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class))
-		{
+		// coin bodies/fixtures
+		for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
 			new Coin(screen, object);
 		}
-		
-		//create goombas
+
+		// create goombas
 		goombas = new Array<Goomba>();
-		for(MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class))
-		{
+		for (MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
 			Rectangle rect = ((RectangleMapObject) object).getRectangle();
-			goombas.add(new Goomba(screen, rect.getX()/MarioBrosClone.PPM, rect.getY()/MarioBrosClone.PPM));
+			goombas.add(new Goomba(screen, rect.getX() / MarioBrosClone.PPM, rect.getY() / MarioBrosClone.PPM));
 		}
-		
-		//turtles
+
+		// turtles
 		turtles = new Array<Turtle>();
-		for(MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class))
-		{
+		for (MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)) {
 			Rectangle rect = ((RectangleMapObject) object).getRectangle();
-			turtles.add(new Turtle(screen, rect.getX()/MarioBrosClone.PPM, rect.getY()/MarioBrosClone.PPM));
+			turtles.add(new Turtle(screen, rect.getX() / MarioBrosClone.PPM, rect.getY() / MarioBrosClone.PPM));
+		}
+		for (MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)) {
+
+			screen.setFlag(new FlagPole(screen, object));
 		}
 	}
-	
-	public Array<Goomba> getGoombas(){
+
+	public Array<Goomba> getGoombas() {
 		return goombas;
 	}
-	public Array<Enemy> getEnemies(){
-		Array<Enemy>  enemy = new Array<Enemy>();
+
+	public Array<Enemy> getEnemies() {
+		Array<Enemy> enemy = new Array<Enemy>();
 		enemy.addAll(goombas);
 		enemy.addAll(turtles);
 		return enemy;
 	}
-	
-	public void clearTurtle(Turtle turtle)
-	{
+
+	public void clearTurtle(Turtle turtle) {
 		turtles.removeValue(turtle, true);
 	}
 }
